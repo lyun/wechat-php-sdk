@@ -14,6 +14,7 @@
 - 二次验证
 - OAuth2（生成授权url、获取成员信息）
 - 获取企业微信服务器IP列表
+- 微信JSAPI授权(获取ticket、获取签名)
 
 
 ## 初始化动作 
@@ -96,6 +97,11 @@ $options = array(
 ## 主动接口方法：
 * checkAuth($appid='',$appsecret='',$token='') 通用auth验证方法,也用来换取ACCESS_TOKEN 。仅在需要手动指定access_token时才用`$token`
 * resetAuth($appid='') 清除记录的ACCESS_TOKEN
+* resetJsTicket($appid='') 删除JSAPI授权TICKET
+* getJsTicket($appid='',$jsapi_ticket='') 获取JSAPI授权TICKET
+* getJsSign($url, $timeStamp, $nonceStr, $appid='') 获取JsApi使用签名
+* getSignature($arrdata,'sha1') 生成签名字串  
+* generateNonceStr($length=16) 获取随机字串  
 * createMenu($data,$agentid='') 创建菜单,参数:菜单内容数组,要创建菜单应用id
 * getMenu($agentid='') 获取菜单内容,参数:要获取菜单内容的应用id
 * deleteMenu($agentid='') 删除菜单,参数:要删除菜单的应用id
@@ -116,6 +122,7 @@ $options = array(
 > 0获取全部员工，1获取已关注成员列表，2获取禁用成员列表，4获取未关注成员列表。status可叠加
 * getUserListInfo($department_id,$fetch_child=0,$status=0) 获取部门成员详情，参数同上
 * getUserId($code,$agentid) 根据code获取员工UserID与手机设备号，参数：Oauth2.0或者二次验证返回的code值，跳转链接时所在的企业应用ID
+* sendInvite($userid,$invite_tips='') 邀请成员关注
 * createTag($data) 创建标签，参数：array("tagname" => "UI")
 * updateTag($data) 更新标签，参数：array("tagid" => "1","tagname" => "UI")
 * deleteTag($tagid) 删除标签，参数：标签TagID

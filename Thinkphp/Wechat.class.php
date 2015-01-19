@@ -1811,6 +1811,42 @@ class Wechat
 		}
 		return false;
 	}
+	
+	public function sendCustomMessageText($openid,$msg) {
+		$data = array("touser"=>$openid, "msgtype"=>"text","text"=>array("content"=>$msg));
+		$result = $this->sendCustomMessage($data);
+		return $result;
+	}
+	
+	public function sendCustomMessageNews($openid,$subject,$desc,$url,$picurl) {
+		$data = array("touser"=>$openid, "msgtype"=>"news",
+				"news"=>array(
+						"articles"=>array(
+								array("title"=>$subject,
+										"description"=>$desc,
+										"url"=>$url,
+										"picurl"=>$picurl)
+						)
+				));
+		$result = $this->sendCustomMessage($data);
+		return $result;
+	}
+	
+	public function sendCustomMessageImg($openid,$filepath) {
+		$json = $this->uploadFile($filepath);
+		if($json != false){
+			$media_id = $json["media_id"];
+			$data = array("touser"=>$openid, "msgtype"=>"image","image"=>array("media_id"=>$media_id));
+			$result = $this->sendCustomMessage($data);
+			if($result == false ){
+				$this->resetAuth();
+				$result = $this->sendCustomMessage($data);
+			}
+	
+			return result;
+		}
+		return false;
+	}
 
 	/**
 	 * oauth 授权跳转接口

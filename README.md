@@ -25,7 +25,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 > ~~**[old_version/wechatext.class.php 非官方扩展API(停止维护)](#user-content-2-wechatextclassphp-非官方扩展api)**~~  
 > ~~**[old_version/wechatauth.class.php 授权登陆(停止维护)](#user-content-3-wechatauthclassphp-授权登陆)**~~  
 > ~~**[old_version/wechat.js 内嵌JS(已废弃)](#user-content-4-wechatjs-内嵌js)**~~  
-> **[为开发框架进行适配](#user-content-为开发框架进行适配)** 
+> **[为开发框架进行适配](#user-content-为开发框架进行适配)**  
 > **[调用示例](#user-content-调用示例)**  
 
 ----------
@@ -50,7 +50,8 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 - 卡券管理（创建、修改、删除、发放、门店管理等） **（认证权限）**
 - 语义理解 **（服务号、认证权限）**
 - 获取微信服务器IP列表 **（初级权限）**  
-- 微信JSAPI授权(获取ticket、获取签名) **（初级权限）**
+- 微信JSAPI授权(获取ticket、获取签名) **（初级权限）**  
+- 数据统计(用户、图文、消息、接口分析数据) **（认证权限）**  
 > 备注：  
 > 初级权限：基本权限，任何正常的公众号都有此权限  
 > 菜单权限：正常的服务号、认证后的订阅号拥有此权限  
@@ -117,37 +118,37 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 ### 预定义常量列表：
 ```php
 ////消息类型，使用实例调用getRevType()方法取得
-	const MSGTYPE_TEXT = 'text';
-	const MSGTYPE_IMAGE = 'image';
-	const MSGTYPE_LOCATION = 'location';
-	const MSGTYPE_LINK = 'link';
-	const MSGTYPE_EVENT = 'event';
-	const MSGTYPE_MUSIC = 'music';
-	const MSGTYPE_NEWS = 'news';
-	const MSGTYPE_VOICE = 'voice';
-	const MSGTYPE_VIDEO = 'video';
+const MSGTYPE_TEXT = 'text';
+const MSGTYPE_IMAGE = 'image';
+const MSGTYPE_LOCATION = 'location';
+const MSGTYPE_LINK = 'link';
+const MSGTYPE_EVENT = 'event';
+const MSGTYPE_MUSIC = 'music';
+const MSGTYPE_NEWS = 'news';
+const MSGTYPE_VOICE = 'voice';
+const MSGTYPE_VIDEO = 'video';
 ////事件类型，使用实例调用getRevEvent()方法取得
-	const EVENT_SUBSCRIBE = 'subscribe';       //订阅
-	const EVENT_UNSUBSCRIBE = 'unsubscribe';   //取消订阅
-	const EVENT_SCAN = 'SCAN';                 //扫描带参数二维码
-	const EVENT_LOCATION = 'LOCATION';         //上报地理位置
-	const EVENT_MENU_VIEW = 'VIEW';                     //菜单 - 点击菜单跳转链接
-	const EVENT_MENU_CLICK = 'CLICK';                   //菜单 - 点击菜单拉取消息
-	const EVENT_MENU_SCAN_PUSH = 'scancode_push';       //菜单 - 扫码推事件(客户端跳URL)
-	const EVENT_MENU_SCAN_WAITMSG = 'scancode_waitmsg'; //菜单 - 扫码推事件(客户端不跳URL)
-	const EVENT_MENU_PIC_SYS = 'pic_sysphoto';          //菜单 - 弹出系统拍照发图
-	const EVENT_MENU_PIC_PHOTO = 'pic_photo_or_album';  //菜单 - 弹出拍照或者相册发图
-	const EVENT_MENU_PIC_WEIXIN = 'pic_weixin';         //菜单 - 弹出微信相册发图器
-	const EVENT_MENU_LOCATION = 'location_select';      //菜单 - 弹出地理位置选择器
-	const EVENT_SEND_MASS = 'MASSSENDJOBFINISH';        //发送结果 - 高级群发完成
-	const EVENT_SEND_TEMPLATE = 'TEMPLATESENDJOBFINISH';//发送结果 - 模板消息发送结果
-	const EVENT_KF_SEESION_CREATE = 'kfcreatesession';  //多客服 - 接入会话
-	const EVENT_KF_SEESION_CLOSE = 'kfclosesession';    //多客服 - 关闭会话
-	const EVENT_KF_SEESION_SWITCH = 'kfswitchsession';  //多客服 - 转接会话
-	const EVENT_CARD_PASS = 'card_pass_check';          //卡券 - 审核通过
-	const EVENT_CARD_NOTPASS = 'card_not_pass_check';   //卡券 - 审核未通过
-	const EVENT_CARD_USER_GET = 'user_get_card';        //卡券 - 用户领取卡券
-	const EVENT_CARD_USER_DEL = 'user_del_card';        //卡券 - 用户删除卡券
+const EVENT_SUBSCRIBE = 'subscribe';       //订阅
+const EVENT_UNSUBSCRIBE = 'unsubscribe';   //取消订阅
+const EVENT_SCAN = 'SCAN';                 //扫描带参数二维码
+const EVENT_LOCATION = 'LOCATION';         //上报地理位置
+const EVENT_MENU_VIEW = 'VIEW';                     //菜单 - 点击菜单跳转链接
+const EVENT_MENU_CLICK = 'CLICK';                   //菜单 - 点击菜单拉取消息
+const EVENT_MENU_SCAN_PUSH = 'scancode_push';       //菜单 - 扫码推事件(客户端跳URL)
+const EVENT_MENU_SCAN_WAITMSG = 'scancode_waitmsg'; //菜单 - 扫码推事件(客户端不跳URL)
+const EVENT_MENU_PIC_SYS = 'pic_sysphoto';          //菜单 - 弹出系统拍照发图
+const EVENT_MENU_PIC_PHOTO = 'pic_photo_or_album';  //菜单 - 弹出拍照或者相册发图
+const EVENT_MENU_PIC_WEIXIN = 'pic_weixin';         //菜单 - 弹出微信相册发图器
+const EVENT_MENU_LOCATION = 'location_select';      //菜单 - 弹出地理位置选择器
+const EVENT_SEND_MASS = 'MASSSENDJOBFINISH';        //发送结果 - 高级群发完成
+const EVENT_SEND_TEMPLATE = 'TEMPLATESENDJOBFINISH';//发送结果 - 模板消息发送结果
+const EVENT_KF_SEESION_CREATE = 'kfcreatesession';  //多客服 - 接入会话
+const EVENT_KF_SEESION_CLOSE = 'kfclosesession';    //多客服 - 关闭会话
+const EVENT_KF_SEESION_SWITCH = 'kfswitchsession';  //多客服 - 转接会话
+const EVENT_CARD_PASS = 'card_pass_check';          //卡券 - 审核通过
+const EVENT_CARD_NOTPASS = 'card_not_pass_check';   //卡券 - 审核未通过
+const EVENT_CARD_USER_GET = 'user_get_card';        //卡券 - 用户领取卡券
+const EVENT_CARD_USER_DEL = 'user_del_card';        //卡券 - 用户删除卡券
 ```
 
 ### 主动接口方法:   
@@ -155,7 +156,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  *  resetAuth($appid='') 删除验证数据
  *  resetJsTicket($appid='') 删除JSAPI授权TICKET
  *  getJsTicket($appid='',$jsapi_ticket='') 获取JSAPI授权TICKET
- *  getJsSign($url, $timeStamp, $nonceStr, $appid='') 获取JsApi使用签名
+ *  getJsSign($url, $timestamp=0, $noncestr='', $appid='') 获取JsApi使用签名信息数组，可只提供url地址 
  *  createMenu($data) 创建菜单 $data菜单结构详见 **[自定义菜单创建接口](http://mp.weixin.qq.com/wiki/index.php?title=自定义菜单创建接口)**
  *  getServerIp() 获取微信服务器IP地址列表 返回数组array('127.0.0.1','127.0.0.1')
  *  getMenu() 获取菜单 
@@ -205,6 +206,30 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  *  deleteKFAccount($account) 删除客服账号
  *  setKFHeadImg($account,$imgfile) 上传客服头像
  *  querySemantic($uid,$query,$category,$latitude=0,$longitude=0,$city="",$region="") 语义理解接口 参数含义及返回的json内容请查看 **[微信语义理解接口](http://mp.weixin.qq.com/wiki/index.php?title=语义理解)**
+ *  getDatacube($type,$subtype,$begin_date,$end_date='') 获取统计数据 参数需注意$type与$subtype的定义
+> 获取统计数据方法 参数定义
+> 
+| 数据分类 | $type值(字符串)  | 数据子分类 | $subtype值(字符串) | 时间跨度(天) |
+| --------- | :-------:  | --------- | :------: | ----: |
+| 用户分析 | 'user' | 获取用户增减数据 | 'summary' | 7 |
+| 用户分析 | 'user' | 获取累计用户数据 | 'cumulate' | 7 |
+| 图文分析 | 'article' | 获取图文群发每日数据 | 'summary' | 1 |
+| 图文分析 | 'article' | 获取图文群发总数据 | 'total' | 1 |
+| 图文分析 | 'article' | 获取图文统计数据 | 'read' | 3 |
+| 图文分析 | 'article' | 获取图文统计分时数据 | 'readhour' | 1 |
+| 图文分析 | 'article' | 获取图文分享转发数据 | 'share' | 7 |
+| 图文分析 | 'article' | 获取图文分享转发分时数据 | 'sharehour' | 1 |
+| 消息分析 | 'upstreammsg' | 获取消息发送概况数据 | 'summary' | 7 |
+| 消息分析 | 'upstreammsg' | 获取消息分送分时数据 | 'hour' | 1 |
+| 消息分析 | 'upstreammsg' | 获取消息发送周数据 | 'week' | 30 |
+| 消息分析 | 'upstreammsg' | 获取消息发送月数据 | 'month' | 30 |
+| 消息分析 | 'upstreammsg' | 获取消息发送分布数据 | 'dist' | 15 |
+| 消息分析 | 'upstreammsg' | 获取消息发送分布周数据 | 'distweek' | 30 |
+| 消息分析 | 'upstreammsg' | 获取消息发送分布月数据 | 'distmonth' | 30 |
+| 接口分析 | 'interface' | 获取接口分析数据 | 'summary' | 30 |
+| 接口分析 | 'interface' | 获取接口分析分时数据 | 'summaryhour' | 1 |
+需要注意 `begin_date`和`end_date`的差值需小于“最大时间跨度”（比如最大时间跨度为1时，`begin_date`和`end_date`的差值只能为0，才能小于1）
+
  *  createCard($data) 创建卡券
  *  updateCard($data) 修改卡券
  *  delCard($card_id) 删除卡券
@@ -217,8 +242,8 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  *  decryptCardCode($encrypt_code) code 解码
  *  checkCardCode($code) 获取 code 的有效性
  *  getCardIdList($data) 批量查询卡列表
- *  updateCardCode($code,$code_id,$new_code) 更改 code
- *  unavailableCardCode($code) 设置卡券失效**(不可逆)**
+ *  updateCardCode($code,$card_id,$new_code) 更改 code
+ *  unavailableCardCode($code,$card_id='') 设置卡券失效**(不可逆)**
  *  modifyCardStock($data) 库存修改
  *  activateMemberCard($data) 激活/绑定会员卡，参数结构请参看卡券开发文档(6.1.1 激活/绑定会员卡)章节
  *  updateMemberCard($data) 会员卡交易，参数结构请参看卡券开发文档(6.1.2 会员卡交易)章节
@@ -227,7 +252,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  
  
 ## ~~2. wechatext.class.php 非官方扩展API~~  
-**此扩展类库已经不再更新，原因是官方对公众号开放了众多接口，此类库继续维护的意义不大**
+**此扩展类库已经不再更新，原因是官方对公众号开放了众多接口，此类库继续维护的意义不大**  
 非官方扩展API，需要配置公众平台账户和密码，能实现对已关注用户的点对点微信，此方式不保证长期有效。  
 类方法里提及的用户id在接口返回结构里表述为FakeId, 属同一概念, 在下面wechatauth类里则表示为Uin, 用户id对应的微信号必须通过getInfo()方法通过返回数组的Username值获取, 但非关注关系用户资料不能获取.  
 调用下列方法前必须经过login()方法和checkValid()验证方法才能获得调用权限. 有的账户无法通过登陆可能因为要求提供验证码, 可以手动登陆后把获取到的cookie写进程序存放cookie的文件解决.  
@@ -253,7 +278,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  *  getMsgVoice($msgid) 若消息type类型为3, 调用此方法获取语音数据  
 
 ## ~~3. wechatauth.class.php 授权登陆~~
-**此扩展类库已经不再更新，原因是官方开放平台对网站应用开放的有授权登陆接口，更标准，更好用。请查看：[微信开放平台](http://open.weixin.qq.com)**
+**此扩展类库已经不再更新，原因是官方开放平台对网站应用开放的有授权登陆接口，更标准，更好用。请查看：[微信开放平台](http://open.weixin.qq.com)**  
 通过微信二维码登陆微信的API, 能实现第三方网站同步登陆, 首先程序分别通过get_login_code和get_code_image方法获取授权二维码图片, 然后利用微信手机客户端扫描二维码图片后将自动跳出授权页面, 用户点击授权后即可获取对应的用户资料和头像信息. 详细验证步骤请看test3.php例子.   
 ### 类主要方法:
  *  get_login_code() 获取登陆授权码, 通过授权码才能获取二维码  
@@ -296,7 +321,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  ```
 
 ## 5. errCode.php 全局返回码类
-当调用API接口失败时，可以用此类来换取失败原因的中文说明。
+当调用API接口失败时，可以用此类来换取失败原因的中文说明。  
 注意：微信公众号引用`errCode.php`，企业号引用`qyerrCode.php`。
 
 ### 使用方法：
@@ -411,7 +436,7 @@ $options = array(
 * resetAuth($appid='') 清除记录的ACCESS_TOKEN
 * resetJsTicket($appid='') 删除JSAPI授权TICKET
 * getJsTicket($appid='',$jsapi_ticket='') 获取JSAPI授权TICKET
-* getJsSign($url, $timeStamp, $nonceStr, $appid='') 获取JsApi使用签名
+* getJsSign($url, $timestamp=0, $noncestr='', $appid='') 获取JsApi使用签名信息数组，可只提供url地址 
 * getSignature($arrdata,'sha1') 生成签名字串  
 * generateNonceStr($length=16) 获取随机字串  
 * createMenu($data,$agentid='') 创建菜单,参数:菜单内容数组,要创建菜单应用id
@@ -448,7 +473,7 @@ $options = array(
 
 
 ## 7. wechatpay.class.php 旧版微信支付V2接口类库
-旧版微信支付类库(微信支付V2)，已移动至old_version目录下。
+旧版微信支付类库(微信支付V2)，已移动至old_version目录下。  
 自2014年8月开始申请到的微信支付都是V3接口，据官方说V2的会陆续升级为V3接口，但时间及升级渠道未确认。
 
 ### 主要功能 
@@ -457,7 +482,7 @@ $options = array(
 - 生成订单签名数据 **（支付权限）**
 - 订单成功回调 **（支付权限）**
 - 发货通知 **（支付权限）**
-- 支付订单查询 **（支付权限）**
+- 支付订单查询 **（支付权限）**  
 > 备注：  
 > 初级权限：基本权限，任何正常的公众号都有此权限  
 > 菜单权限：正常的服务号、认证后的订阅号拥有此权限  

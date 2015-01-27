@@ -16,7 +16,7 @@
  *		);
  *
  */
-class Wechat
+class WechatQy
 {
     const MSGTYPE_TEXT = 'text';
     const MSGTYPE_IMAGE = 'image';

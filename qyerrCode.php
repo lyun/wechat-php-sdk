@@ -11,7 +11,7 @@
  *      else
  *          echo "未找到对应的内容";
  */
-class ErrCode
+class ErrCodeQy
 {
 	public static $errCode=array(
 	        '-1'=>'系统繁忙',

@@ -1,4 +1,9 @@
 <?php
+include_once "PKCS7Encoder.class.php";
+include_once "Prpcrypt.class.php";
+include_once "ErrorCode.class.php";
+include_once "wechat.class.php";
+
 /**
  *	微信公众平台PHP-SDK, ThinkPHP实例
  *  @author dodgepudding@gmail.com
@@ -63,6 +68,72 @@ class TPWechat extends Wechat
 	protected function removeCache($cachename){
 		return S($cachename,null);
 	}
+
+	/**
+	 * =================================================
+	 * lyun
+	 * =================================================
+	 */
+
+	/**
+	 * 快速发送文本
+	 * @param $openid
+	 * @param $msg
+	 * @return array|bool
+	 */
+	public function sendCustomMessageText($openid,$msg) {
+		$data = array("touser"=>$openid, "msgtype"=>"text","text"=>array("content"=>$msg));
+		$result = $this->sendCustomMessage($data);
+		return $result;
+	}
+
+	/**
+	 * 快速发送单图文
+	 * @param $openid
+	 * @param $subject
+	 * @param $desc
+	 * @param $url
+	 * @param $picurl
+	 * @return array|bool
+	 */
+	public function sendCustomMessageNews($openid,$subject,$desc,$url,$picurl) {
+		$data = array("touser"=>$openid, "msgtype"=>"news",
+			"news"=>array(
+				"articles"=>array(
+					array("title"=>$subject,
+						"description"=>$desc,
+						"url"=>$url,
+						"picurl"=>$picurl)
+				)
+			));
+		$result = $this->sendCustomMessage($data);
+		return $result;
+	}
+
+	/**
+	 * 快速发送图片
+	 * @param $openid
+	 * @param $filepath
+	 * @return bool
+	 */
+	public function sendCustomMessageImg($openid,$filepath) {
+		$data = array('media'=>$filepath);
+		$json = $this->uploadMedia($data,'image');
+		Log::write("上传图片：".var_export($json,true),Log::DEBUG);
+		if($json != false){
+			$media_id = $json["media_id"];
+			$data = array("touser"=>$openid, "msgtype"=>"image","image"=>array("media_id"=>$media_id));
+			$result = $this->sendCustomMessage($data);
+			if($result == false ){
+				$this->resetAuth();
+				$result = $this->sendCustomMessage($data);
+			}
+
+			return result;
+		}
+		return false;
+	}
+
 
 }
 

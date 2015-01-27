@@ -1,4 +1,8 @@
 <?php
+include_once "PKCS7Encoder.class.php";
+include_once "Prpcrypt.class.php";
+include_once "ErrorCode.class.php";
+
 /**
  *    微信公众平台PHP-SDK, 简单缓存实例
  *  @author binsee@163.com

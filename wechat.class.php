@@ -1,4 +1,7 @@
 <?php
+include_once "PKCS7Encoder.class.php";
+include_once "Prpcrypt.class.php";
+include_once "ErrorCode.class.php";
 /**
  *	微信公众平台PHP-SDK, 官方API部分
  *  @author  dodge <dodgepudding@gmail.com>
@@ -93,6 +96,7 @@ class Wechat
 	const GROUP_CREATE_URL='/groups/create?';
 	const GROUP_UPDATE_URL='/groups/update?';
 	const GROUP_MEMBER_UPDATE_URL='/groups/members/update?';
+	const GROUP_MEMBER_BATCHUPDATE_URL='/groups/members/batchupdate?';
 	const CUSTOM_SEND_URL='/message/custom/send?';
 	const MEDIA_UPLOADNEWS_URL = '/media/uploadnews?';
 	const MASS_SEND_URL = '/message/mass/send?';
@@ -1721,21 +1725,19 @@ class Wechat
 
 	/**
 	 * 创建二维码ticket
-	 * @param int $scene_id 自定义追踪id 如果为字符串则使用scene_str参数生成
-	 * @param int $type 0:临时二维码；1:永久二维码(此时expire参数无效)
+	 * @param int|string $scene_id 自定义追踪id,临时二维码只能用数值型
+	 * @param int $type 0:临时二维码；1:永久二维码(此时expire参数无效)；2:永久二维码(此时expire参数无效)
 	 * @param int $expire 临时二维码有效期，最大为1800秒
 	 * @return array('ticket'=>'qrcode字串','expire_seconds'=>1800,'url'=>'二维码图片解析后的地址')
 	 */
 	public function getQRCode($scene_id,$type=0,$expire=1800){
 		if (!$this->access_token && !$this->checkAuth()) return false;
+		$type = ($type && is_string($scene_id))?2:$type;
 		$data = array(
-			'action_name'=>$type?"QR_LIMIT_SCENE":"QR_SCENE",
+			'action_name'=>$type?($type == 2?"QR_LIMIT_STR_SCENE":"QR_LIMIT_SCENE"):"QR_SCENE",
 			'expire_seconds'=>$expire,
-			'action_info'=>array('scene'=>array('scene_id'=>$scene_id))
+			'action_info'=>array('scene'=>($type == 2?array('scene_str'=>$scene_id):array('scene_id'=>$scene_id)))
 		);
-		if(is_int($scene_id) == false) {
-			$data['action_info'] = array('scene'=>array('scene_str'=>$scene_id));
-		}
 		if ($type == 1) {
 			unset($data['expire_seconds']);
 		}
@@ -1803,7 +1805,7 @@ class Wechat
             'begin_date'=>$begin_date,
             'end_date'=>$end_date?$end_date:$begin_date
 	    );
-	    $result = $this->http_post(self::API_URL_PREFIX.self::$DATACUBE_URL_ARR[$type][$subtype].'access_token='.$this->access_token,self::json_encode($data));
+	    $result = $this->http_post(self::API_BASE_URL_PREFIX.self::$DATACUBE_URL_ARR[$type][$subtype].'access_token='.$this->access_token,self::json_encode($data));
 	    if ($result)
 	    {
 	        $json = json_decode($result,true);
@@ -1991,6 +1993,32 @@ class Wechat
 				'to_groupid'=>$groupid
 		);
 		$result = $this->http_post(self::API_URL_PREFIX.self::GROUP_MEMBER_UPDATE_URL.'access_token='.$this->access_token,self::json_encode($data));
+		if ($result)
+		{
+			$json = json_decode($result,true);
+			if (!$json || !empty($json['errcode'])) {
+				$this->errCode = $json['errcode'];
+				$this->errMsg = $json['errmsg'];
+				return false;
+			}
+			return $json;
+		}
+		return false;
+	}
+
+	/**
+	 * 批量移动用户分组
+	 * @param int $groupid 分组id
+	 * @param string $openid_list 用户openid数组,一次不能超过50个
+	 * @return boolean|array
+	 */
+	public function batchUpdateGroupMembers($groupid,$openid_list){
+		if (!$this->access_token && !$this->checkAuth()) return false;
+		$data = array(
+				'openid_list'=>$openid_list,
+				'to_groupid'=>$groupid
+		);
+		$result = $this->http_post(self::API_URL_PREFIX.self::GROUP_MEMBER_BATCHUPDATE_URL.'access_token='.$this->access_token,self::json_encode($data));
 		if ($result)
 		{
 			$json = json_decode($result,true);

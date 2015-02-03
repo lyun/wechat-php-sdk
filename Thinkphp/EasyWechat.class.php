@@ -1,7 +1,5 @@
 <?php
-include_once "PKCS7Encoder.class.php";
-include_once "Prpcrypt.class.php";
-include_once "ErrorCode.class.php";
+include_once "wechat.class.php";
 
 /**
  *    微信公众平台PHP-SDK, 简单缓存实例
@@ -100,7 +98,7 @@ class EasyWechat extends Wechat
     private function checkDir($dir, $mode=0777) {
         if (!$dir)  return false;
         if(!is_dir($dir)) {
-            if (!file_exists() && @mkdir($dir, $mode, true))
+            if (!file_exists($dir) && @mkdir($dir, $mode, true))
                 return true;
             return false;
         }

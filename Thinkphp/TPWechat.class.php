@@ -1,7 +1,4 @@
 <?php
-include_once "PKCS7Encoder.class.php";
-include_once "Prpcrypt.class.php";
-include_once "ErrorCode.class.php";
 include_once "wechat.class.php";
 
 /**

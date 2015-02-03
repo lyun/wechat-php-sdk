@@ -1721,7 +1721,7 @@ class Wechat
 
 	/**
 	 * 创建二维码ticket
-	 * @param int $scene_id 自定义追踪id
+	 * @param int $scene_id 自定义追踪id 如果为字符串则使用scene_str参数生成
 	 * @param int $type 0:临时二维码；1:永久二维码(此时expire参数无效)
 	 * @param int $expire 临时二维码有效期，最大为1800秒
 	 * @return array('ticket'=>'qrcode字串','expire_seconds'=>1800,'url'=>'二维码图片解析后的地址')
@@ -1733,6 +1733,9 @@ class Wechat
 			'expire_seconds'=>$expire,
 			'action_info'=>array('scene'=>array('scene_id'=>$scene_id))
 		);
+		if(is_int($scene_id) == false) {
+			$data['action_info'] = array('scene'=>array('scene_str'=>$scene_id));
+		}
 		if ($type == 1) {
 			unset($data['expire_seconds']);
 		}

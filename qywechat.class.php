@@ -940,7 +940,7 @@ class WechatQy
 		if (!$appid) $appid = $this->appid;
 		if ($jsapi_ticket) { //手动指定token，优先使用
 		    $this->jsapi_ticket = $jsapi_ticket;
-		    return $this->access_token;
+		    return $this->jsapi_ticket;
 		}
 		$authname = 'qywechat_jsapi_ticket'.$appid;
 		if ($rs = $this->getCache($authname))  {
@@ -1355,12 +1355,14 @@ class WechatQy
 	 *        {
 	 *            "id": 1,
 	 *            "name": "广州研发中心",
-	 *            "parentid": 0
+	 *            "parentid": 0,
+	 *            "order": 40
 	 *        },
  	 *       {
 	 *          "id": 2
   	 *          "name": "邮箱产品部",
-  	 *          "parentid": 1
+  	 *          "parentid": 1,
+	 *          "order": 40
  	 *       }
 	 *    ]
 	 * }
